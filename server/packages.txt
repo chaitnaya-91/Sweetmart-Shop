@@ -1,0 +1,74 @@
+1. nodemon
+2. multer
+3. mongoose
+4. bycript :-  allowing you to use the hash encryption without having to meddle with complex hashing functions
+    (make password make secure convert plain text into hash value)
+5. jsonwebtoken :-securely transmitting information between parties as a JSON object
+    (like your frontend and backend) as a token.
+6. cookie-parser :-is a middleware for Express.js used to read and parse cookies from the request headers.
+
+
+
+
+
+
+🔢 Summary of Common Status Codes:
+Code	Meaning	Use case example
+200	OK	Request succeeded
+201	Created	New resource was created (like after register)
+400	Bad Requzssssssest	Missing fields, invalid data
+401	Unauthorized	Not logged in, token missing/invalid
+403	Forbidden	Logged in but not allowed to do something
+404	Not Found	Route or resource not found
+500	Internal Server Error	Something broke on the server
+
+ const{title,desc}=req.body;
+
+        const imagePath= req.file ? req.file.filename : null;
+        const Createpost= new Postmodel({
+            title, desc, image:imagePath
+        })
+        await Createpost.save();
+         return res.status(200).json({success:true, message:'Post Created', sweet:Createpost});
+
+
+
+
+
+const Login= async (req, res) => {
+    try {
+        const {Email, Password}= req.body;
+        if(!Email || ! Password){
+            return res.status(400).json({ success: false, message: "All fields are required" }); 
+        }
+       const findUser= await Usermodel.findOne({Email});
+       
+       if(!findUser){
+        return res.status(400).json({ success: false, message: "no user found please register first" }); 
+       }
+
+       const compPass= await bcrypt.compare(Password, findUser.Password);
+       console.log("Password Match:", compPass);
+
+       if(!compPass){
+        return res.status(400).json({ success: false, message: "password doen't match" }); 
+       }
+
+       const token= jwt.sign({userId: findUser._id}, process.env.JWT_SECRET);
+       res.cookie('token', token, {
+        httpOnly: true,
+        secure: false,
+        maxAge: 3 * 24 * 60 * 60 * 1000  //for 3day 24hr 60min 60sec 1000ms
+       });    
+      
+
+       // {maxAge, httpOnly, secure, expires, path, domain, sameSite} only these cookies are used
+
+       return res.status(200).json({ success: true, message: "Login Successfully! ", user:findUser , token}); 
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" }); 
+    }
+
+}

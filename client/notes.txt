@@ -1,0 +1,47 @@
+   Tag	                          Use When
+<a href="">	   For external links (e.g. https://google.com)
+<NavLink>	   For internal navigation with active styling & smooth transitions
+<Link>	       Same as NavLink, but without active class support
+
+
+🔁 Common Axios Terms Explained
+Term	Meaning
+axios.get(url)	Send a GET request to the URL
+axios.post(url, data)	Send a POST request with data
+.then()	Handle a successful response
+.catch()	Handle an error if the request fails
+async/await	Modern syntax for handling promises
+headers	Extra information (like token, content-type) sent with request
+response.data	The actual data you receive from backend
+
+request interceptor	Modify or log requests before sending
+response interceptor	Log or handle responses and errors globally
+
+🔄 Flow Diagram:
+React ⟶ Request Interceptor ⟶ Backend API ⟶ Response Interceptor ⟶ React
+
+accept value	What it allows
+image/*         	        All image types (.jpg, .png, .webp, etc.)
+video/*        	        All video files (.mp4, .avi, etc.)
+audio/*        	        All audio files (.mp3, .wav, etc.)
+.pdf            	        Only PDF files
+.doc,.docx	              Only Word documents
+image/png, image/jpeg	  Only PNG and JPEG images
+.jpg, .png, .gif	        Only those exact extensions
+application/zip	        Only zip files
+
+cors  :-
+
+In a React project, CORS (Cross-Origin Resource Sharing) is not something React directly handles, but it's very important when your React app (frontend) tries to make requests to a backend API hosted on a different origin (i.e., different domain, protocol, or port).
+
+🚫 Problem Without CORS:
+If your React app (e.g., running on http://localhost:3000) tries to fetch data from a backend server at http://localhost:5000, the browser blocks the request due to same-origin policy — unless the backend explicitly allows it.
+
+Login:-
+import React, { useState, FormEvent } from 'react';
+import { FaUser, FaLock } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { setUser } from '../redux/AuthSlice';
+import { patch } from '../services/Endpoint';

@@ -1,0 +1,14 @@
+@keyframes scrollLeft {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  .scroll-marquee {
+    display: flex;
+    gap: 2rem;
+    animation: scrollLeft 20s linear infinite;
+  }
